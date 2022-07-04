@@ -55,12 +55,14 @@ class OnnxWrapper():
 class Validator():
     def __init__(self, url):
         self.onnx = True if url.endswith('.onnx') else False
-        torch.hub.download_url_to_file(url, 'inf.model')
+        if ('https://' in url):
+            model_path = 'inf.model'
+            torch.hub.download_url_to_file(url, model_path)
         if self.onnx:
             import onnxruntime
-            self.model = onnxruntime.InferenceSession('inf.model')
+            self.model = onnxruntime.InferenceSession(model_path)
         else:
-            self.model = init_jit_model(model_path='inf.model')
+            self.model = init_jit_model(model_path=model_path)
 
     def __call__(self, inputs: torch.Tensor):
         with torch.no_grad():
