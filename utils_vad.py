@@ -4,6 +4,8 @@ from typing import List
 import torch.nn.functional as F
 import warnings
 
+from huggingface_hub import hf_hub_download
+
 languages = ['ru', 'en', 'de', 'es']
 
 
@@ -58,6 +60,9 @@ class Validator():
         if ('https://' in url):
             model_path = 'inf.model'
             torch.hub.download_url_to_file(url, model_path)
+        else:
+            url, model_name = url.split("#")
+            model_path = hf_hub_download(url, model_name)
         if self.onnx:
             import onnxruntime
             self.model = onnxruntime.InferenceSession(model_path)

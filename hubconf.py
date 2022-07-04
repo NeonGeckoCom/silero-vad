@@ -1,4 +1,4 @@
-dependencies = ['torch', 'torchaudio']
+dependencies = ['torch', 'torchaudio', 'huggingface_hub']
 import torch
 import json
 from utils_vad import (init_jit_model,
@@ -77,9 +77,9 @@ def silero_lang_detector_95(onnx=False):
 
     hub_dir = torch.hub.get_dir()
     if onnx:
-        url = 'https://models.silero.ai/vad_models/lang_classifier_95.onnx'
+        url = 'neongeckocom/silero-lang95#lang_classifier_95.onnx'
     else:
-        url = 'https://models.silero.ai/vad_models/lang_classifier_95.jit'
+        url = 'neongeckocom/silero-lang95#lang_classifier_95.jit'
     model = Validator(url)
 
     with open(f'{hub_dir}/NeonGeckoCom_silero-vad_neon-master/files/lang_dict_95.json', 'r') as f:
